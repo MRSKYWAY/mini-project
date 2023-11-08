@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vulnerability Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin: 20px auto;
+            max-width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        p {
+            margin: 10px;
+        }
+        .vulnerability-detected {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+        .vulnerability-not-detected {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .vulnerability-prevention {
+            color: #e67e22;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vulnerability Checker</h1>
+    <form method="POST" action="/">
+        <label for="user_input">Enter Text to Check:</label>
+        <input type="text" name="user_input" required>
+        <button type="submit">Check</button>
+    </form>
+    {% if xss_result is defined %}
+    <p class="{% if xss_result %}vulnerability-detected{% else %}vulnerability-not-detected{% endif %}">XSS Vulnerability: {% if xss_result %}Detected{% else %}Not Detected{% endif %}</p>
+    {% if xss_result %}
+        <p class="vulnerability-prevention">Prevention: {{ prevention_info.xss }}</p>
+    {% endif %}
+
+    <p class="{% if sql_injection_result %}vulnerability-detected{% else %}vulnerability-not-detected{% endif %}">SQL Injection Vulnerability: {% if sql_injection_result %}Detected{% else %}Not Detected{% endif %}</p>
+    {% if sql_injection_result %}
+        <p class="vulnerability-prevention">Prevention: {{ prevention_info.sql_injection }}</p>
+    {% endif %}
+    {% endif %}
+</body>
+</html>
